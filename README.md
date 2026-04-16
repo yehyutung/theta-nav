@@ -6,7 +6,42 @@
 - Create it with: `python3 -m venv .venv`
 - Activate it on macOS or Linux with: `. .venv/bin/activate`
 - Upgrade pip inside the environment with: `python -m pip install --upgrade pip`
-- MiniWorld is installed in the environment with: `python -m pip install MiniWorld`
+- Install baseline dependencies with:
+  - `python -m pip install mujoco numpy matplotlib`
+
+## MuJoCo world scaffold
+
+- Reusable world module: `src/theta_nav/world.py`
+- Quick smoke test script: `scripts/smoke_test_world.py`
+- Run the smoke test with:
+  - `python scripts/smoke_test_world.py`
+- Save quick world artifacts (trajectory + camera frames):
+  - `python scripts/check_world_artifacts.py`
+
+## Mapping scaffold
+
+- Occupancy grid module: `src/theta_nav/occupancy.py`
+- Map generators:
+  - open map: `make_open_map()`
+  - semi-cluttered map: `make_semi_cluttered_map(...)`
+- Save mapping artifacts for open and semi-cluttered worlds:
+  - `python scripts/check_mapping_artifacts.py`
+
+### Notebook import snippet
+
+```python
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path.cwd() / "src"))
+from theta_nav import MujocoNavWorld
+
+world = MujocoNavWorld()
+world.reset()
+for _ in range(100):
+    world.step(forward_speed=1.0, turn_speed=0.2)
+img = world.render_topdown_view()
+```
 
 ## Git setup
 
