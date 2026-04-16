@@ -148,3 +148,11 @@ class MujocoNavWorld:
         if distance <= 0.0:
             return max_range
         return float(min(distance, max_range))
+
+    @property
+    def num_contacts(self) -> int:
+        return int(self.data.ncon)
+
+    @property
+    def is_in_collision(self) -> bool:
+        return self.num_contacts > 0

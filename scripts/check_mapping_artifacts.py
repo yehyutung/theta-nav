@@ -52,7 +52,8 @@ def save_case(case_name: str, obstacles, output_dir: Path) -> None:
     axes[1].imshow(occ, cmap="RdYlGn", origin="lower", vmin=-1, vmax=1)
     gx = (trail[:, 0] + grid.half_size) / grid.resolution
     gy = (trail[:, 1] + grid.half_size) / grid.resolution
-    axes[1].plot(gx, gy, "b-", linewidth=0.8)
+    # Occupancy is displayed as grid.T, so plot axes are swapped.
+    axes[1].plot(gy, gx, "b-", linewidth=0.8)
     axes[1].set_title(f"{case_name}: occupancy + trajectory")
     axes[1].axis("off")
 

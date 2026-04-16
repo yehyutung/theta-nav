@@ -27,6 +27,27 @@
 - Save mapping artifacts for open and semi-cluttered worlds:
   - `python scripts/check_mapping_artifacts.py`
 
+## Episode protocol scaffold
+
+- Rollout module: `src/theta_nav/rollout.py`
+- Protocol choices implemented:
+  - fixed horizon episodes
+  - episode continues after collisions
+  - collision metrics always logged
+  - optional collision penalty in reward
+- Save protocol-check artifacts:
+  - `python scripts/check_episode_protocol.py`
+
+## Policies scaffold
+
+- Policy module: `src/theta_nav/policies.py`
+- Implemented policies:
+  - `ThetaSweepPolicy` (first version)
+  - `LevyWalkPolicy`
+  - `FrontierGreedyPolicy` (simple frontier baseline)
+- Compare all policies with one artifact:
+  - `python scripts/check_policies_artifacts.py`
+
 ### Notebook import snippet
 
 ```python
