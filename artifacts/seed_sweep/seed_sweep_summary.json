@@ -1,0 +1,38 @@
+{
+  "n_total_runs": 30,
+  "policies": {
+    "theta": {
+      "n_runs": 10,
+      "final_explored_fraction_mean": 0.013439999846741556,
+      "final_explored_fraction_sem": 0.0018980222670451688,
+      "total_collisions_mean": 82.5,
+      "total_collisions_sem": 30.857828108205467,
+      "collision_rate_mean": 0.103125,
+      "collision_rate_sem": 0.03857228513525683,
+      "total_reward_mean": 126.14999961853027,
+      "total_reward_sem": 22.04736944320263
+    },
+    "frontier": {
+      "n_runs": 10,
+      "final_explored_fraction_mean": 0.0162200003862381,
+      "final_explored_fraction_sem": 0.000624642168604048,
+      "total_collisions_mean": 11.8,
+      "total_collisions_sem": 10.486817121192365,
+      "collision_rate_mean": 0.014750000000000003,
+      "collision_rate_sem": 0.013108521401490457,
+      "total_reward_mean": 161.0199981689453,
+      "total_reward_sem": 7.084801369970234
+    },
+    "levy": {
+      "n_runs": 10,
+      "final_explored_fraction_mean": 0.019049999956041574,
+      "final_explored_fraction_sem": 0.0015033481031070715,
+      "total_collisions_mean": 82.0,
+      "total_collisions_sem": 27.04646208122443,
+      "collision_rate_mean": 0.10250000000000001,
+      "collision_rate_sem": 0.03380807760153054,
+      "total_reward_mean": 182.29999847412108,
+      "total_reward_sem": 17.58738829533209
+    }
+  }
+}

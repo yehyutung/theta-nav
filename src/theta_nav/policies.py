@@ -1,11 +1,16 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
-from .occupancy import OccupancyGrid
-from .world import MujocoNavWorld
+if TYPE_CHECKING:
+    from .occupancy import OccupancyGrid
+    from .world import MujocoNavWorld
+else:
+    OccupancyGrid = Any
+    MujocoNavWorld = Any
 
 
 def _wrap_to_pi(angle: float) -> float:
@@ -86,11 +91,15 @@ class ThetaSweepPolicy:
     overlap_weight: float = 1.0
     obstacle_weight: float = 0.8
     probe_range: float = 2.5
+    sweep_side_hold_steps: int = 24
+    center_precession_deg: float = 14.0
 
     def __post_init__(self) -> None:
         self._memory = np.zeros(self.num_angle_bins, dtype=np.float32)
         self._target_yaw = 0.0
         self._prefer_left = True
+        self._side_steps_remaining = max(1, int(self.sweep_side_hold_steps))
+        self._center_yaw: float | None = None
 
     def _bin_id(self, angle: float) -> int:
         a = _wrap_to_pi(angle)
@@ -103,7 +112,18 @@ class ThetaSweepPolicy:
         self._memory *= self.decay
         self._memory[self._bin_id(yaw)] += 1.0
 
-        base = yaw
+        if self._center_yaw is None:
+            self._center_yaw = yaw
+
+        if self._side_steps_remaining <= 0:
+            self._prefer_left = not self._prefer_left
+            self._side_steps_remaining = max(1, int(self.sweep_side_hold_steps))
+            if self._prefer_left:
+                # Advance center once per full left-right cycle to avoid narrow oscillations.
+                self._center_yaw = _wrap_to_pi(self._center_yaw + np.deg2rad(self.center_precession_deg))
+        self._side_steps_remaining -= 1
+
+        base = self._center_yaw
         d = np.deg2rad(self.sweep_angle_deg)
         candidate_offsets = np.array([-2 * d, -d, -0.5 * d, 0.5 * d, d, 2 * d], dtype=np.float64)
 
@@ -127,14 +147,14 @@ class ThetaSweepPolicy:
                 best_target = cand
 
         self._target_yaw = _wrap_to_pi(best_target)
-        self._prefer_left = not self._prefer_left
 
     def action(self, t: int, pose: tuple[float, float, float]) -> tuple[float, float]:
         del t
         _, _, yaw = pose
         yaw_err = _wrap_to_pi(self._target_yaw - yaw)
         turn = float(np.clip(self.steering_kp * yaw_err, -self.turn_speed_limit, self.turn_speed_limit))
-        align = max(0.2, 1.0 - abs(yaw_err) / np.pi)
+        # Keep translation active during sweeps so the path remains space-filling.
+        align = max(0.45, 1.0 - abs(yaw_err) / (1.4 * np.pi))
         return self.forward_speed * align, turn
 
 

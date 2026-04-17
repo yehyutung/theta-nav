@@ -48,6 +48,51 @@
 - Compare all policies with one artifact:
   - `python scripts/check_policies_artifacts.py`
 
+## ThetaSweep behavior diagnostics
+
+- Focused behavior-check script: `scripts/check_theta_sweep_behavior.py`
+- Run:
+  - `python scripts/check_theta_sweep_behavior.py --steps 1000 --seed 7`
+- Output:
+  - `artifacts/theta_behavior_check/theta_behavior_diagnostics.png`
+- This artifact includes:
+  - heading-over-time traces (to inspect left-right sweep zigzag)
+  - heading histograms with a simple uniformity score
+  - open-arena trajectories compared against two simple baselines
+
+## Seed sweep pipeline
+
+- Config file (hyperparameters + seeds): `configs/policy_sweep.default.json`
+- Multi-seed runner: `scripts/run_seed_sweep.py`
+- Run:
+  - `python scripts/run_seed_sweep.py --config configs/policy_sweep.default.json`
+- Outputs:
+  - raw per-run metrics: `artifacts/seed_sweep/seed_sweep_raw.csv`
+  - summary stats (mean/SEM): `artifacts/seed_sweep/seed_sweep_summary.json`
+  - summary figure: `artifacts/seed_sweep/seed_sweep_summary.png`
+
+## Interactive visualization pipeline
+
+- Live teleop + occupancy animation script: `scripts/manual_occupancy_teleop.py`
+- Run:
+  - `python scripts/manual_occupancy_teleop.py --map semi`
+- Controls:
+  - `Up/Down` or `I/K`: forward/backward
+  - `Left/Right` or `J/L`: turn left/right
+  - `Space`: pause/resume
+  - `R`: reset episode
+  - `Esc` or `Q`: quit
+
+## Theta parameter explorer
+
+- Interactive policy analysis tool: `scripts/interactive_theta_policy_explorer.py`
+- Run:
+  - `python scripts/interactive_theta_policy_explorer.py`
+- Workflow:
+  - tune `ThetaSweepPolicy` and episode/map sliders
+  - click `Run` to re-simulate and refresh plots/metrics
+  - compare occupancy+trajectory, exploration/collision curves, and heading-memory histogram
+
 ### Notebook import snippet
 
 ```python
