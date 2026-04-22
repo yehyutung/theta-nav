@@ -1,0 +1,54 @@
+{
+  "policy_type": "vollan_v2",
+  "output_dir": "artifacts/vollan_v2_scan_quick",
+  "world": {
+    "room_half_size": 5.0
+  },
+  "episode": {
+    "steps": 2000
+  },
+  "sensor": {
+    "fov_rad": 2.827433388230814,
+    "max_range": 3.0,
+    "num_rays": 72
+  },
+  "environments": [
+    "open",
+    "corridor",
+    "staggered_gates"
+  ],
+  "pose_dither": {
+    "pos_m": 0.3,
+    "yaw_rad": 3.141592653589793
+  },
+  "fixed_policy": {
+    "travel_dir_smoothing": 0.10,
+    "sweep_range_deg": 90.0,
+    "num_candidates": 60,
+    "num_memory_bins": 120,
+    "forward_width_deg": 20.0,
+    "obstacle_weight": 0.2,
+    "dither_deg": 3.0,
+    "sweep_hold_steps": 20,
+    "probe_range": 2.5,
+    "forward_speed": 1.0,
+    "turn_speed_limit": 1.2,
+    "steering_kp": 2.0
+  },
+  "metrics": {
+    "burn_in_fraction": 0.2,
+    "movement_eps": 1e-06,
+    "side_deadzone_deg": 5.0
+  },
+  "scan": {
+    "num_seeds": 6,
+    "base_seed": 0,
+    "top_n": 5
+  },
+  "param_grid": {
+    "decay": [0.90, 0.94, 0.97],
+    "footprint_width_deg": [25.0, 35.0, 45.0],
+    "forward_weight": [0.2, 0.4, 0.6],
+    "overlap_weight": [1.2, 1.8, 2.4]
+  }
+}
